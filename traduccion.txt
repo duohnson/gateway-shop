@@ -1,0 +1,28 @@
+# Gateway Shop (Traducción)
+
+Este repositorio es un proyecto de práctica para construir una pasarela de pago para una pequeña tienda ficticia. El objetivo principal es crear una base de código reutilizable que pueda adaptarse para futuras implementaciones de pasarelas de pago en otros proyectos.
+
+## Propósito del Proyecto
+- Desarrollar un sistema de pasarela de pago simple, seguro y modular.
+- Usar buenas prácticas y una estructura de código clara para facilitar el mantenimiento y la escalabilidad.
+- Evitar el "vibe coding"; todo el código debe ser intencional y estar bien documentado.
+
+## Características
+- Interfaz básica de tienda para probar los flujos de pago.
+- Integración de pasarela de pago (simulada o real, según los requisitos).
+- Diseño modular para facilitar la reutilización en futuros proyectos.
+
+## Reglas
+1. Sin "vibe coding". Todo el código debe ser intencional, claro y mantenible.
+2. El proyecto y la documentación deben estar escritos en inglés.
+
+## Primeros Pasos
+1. Clona el repositorio.
+2. Sigue las instrucciones de configuración en la documentación.
+3. Comienza a construir y probar la pasarela de pago.
+
+## Uso Futuro
+El código desarrollado aquí servirá como base para futuros proyectos de pasarelas de pago, facilitando la integración y personalización.
+
+## Licencia
+Este proyecto es para fines educativos y de práctica. Por favor, revisa el archivo LICENSE para más detalles.
