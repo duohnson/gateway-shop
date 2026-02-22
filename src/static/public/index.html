@@ -1,14 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GateWayShop</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- customs -->
+    <link rel="stylesheet" href="/styles.css">
+    <title>Document</title>
 </head>
 
 <body>
-    <h1>Hola Mundo</h1>
+    <div class="text-center py-5">
+        <h1 class="display-4">Bienvenidos a Gateway Shop</h1>
+        <p class="lead">Gateway Shop es un proyecto ficticio creado para practicar el desarrollo de una tienda en línea.
+        </p>
+        <hr class="my-4">
+        <p>Explora nuestra tienda y descubre cómo funciona este proyecto.</p>
+        <a class="btn btn-primary btn-lg" href="/shop" role="button">Ir a la tienda</a>
+    </div>
+
 </body>
 
 </html>
+{% endblock %}

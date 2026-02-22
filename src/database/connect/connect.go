@@ -1,13 +1,12 @@
 package connect
 
 import (
-	"App/src/configs"
-	"App/src/database/querys"
 	"database/sql"
 	"fmt"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
+	//_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var DB *sql.DB
@@ -17,14 +16,14 @@ func ConnectDB() {
 	//===========//
 	var err error
 	//===========//
-	//
-	//
+	//==============================================================================================================================================================//
 	//___________________OPEN_CONECTION_WHIT_MySQL_______________________//
 	//==============================================================================================================================================================//
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------//
-	DB, err = sql.Open(configs.SGBD, fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?", configs.ADMIN_DB, configs.PASSWORD_DB, configs.HOST_DB, configs.PORT_DB, configs.DB_NAME))
+	//DB, err = sql.Open(configs.SGBD, fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?", configs.ADMIN_DB, configs.PASSWORD_DB, configs.HOST_DB, configs.PORT_DB, configs.DB_NAME))
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------//
-	//
+	//Develepment version
+	DB, err = sql.Open("sqlite3", "./database/gate_way_shop_db.db")
 	//-----------------//
 	if err != nil {
 		//------------//
@@ -38,7 +37,41 @@ func ConnectDB() {
 	//_________CREATE TABLE OF TEST__________//
 	//=======================================//
 	//---------------------------------------//
-	_, err = DB.Exec(querys.CreateTableOfTest)
+	//_, err = DB.Exec(querys.CreateTableOfTest)
+	//Development version
+	_, err = DB.Exec(`CREATE TABLE IF NOT EXISTS tests (
+	id INTEGER,
+	name VARCHAR(20));
+	`)
+	//---------------------------------------//
+	//
+	//------------------//
+	if err != nil {
+		//------------//
+		log.Fatal(err)
+		//-----------//
+	}
+	//------------------//
+	//========================================//
+	//
+	//=======================================//
+	//_______CREATE TABLE OF PRODUCTS________//
+	//=======================================//
+	//---------------------------------------//
+	//_, err = DB.Exec(querys.CreateTableOfProducts)
+	//Development version
+	_, err = DB.Exec(
+		`CREATE TABLE IF NOT EXISTS products (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name VARCHAR(20),
+		class VARCHAR(20),
+		price FLOAT NOT NULL,
+		quantity INT NOT NULL,
+		brand VARCHAR(20) NOT NULL,
+		color VARCHAR(10) NOT NULL,
+		aviable BOOL NOT NULL,
+		img TEXT NOT NULL
+		);`)
 	//---------------------------------------//
 	//
 	//------------------//
