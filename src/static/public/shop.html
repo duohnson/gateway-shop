@@ -1,59 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <title>Document</title>
+    <title>Gateway Shop - Tienda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/navbar.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/shop.js" defer></script>
 </head>
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-
 <body>
-    {% extends 'base.html' %}
-
-    {% block title %}Tienda{% endblock %}
-
-    {% block content %}
-    <div class="text-center py-5">
-        <h1 class="display-4">Bienvenido a la Tienda</h1>
-        <p class="lead">Explora nuestros productos y encuentra lo que necesitas. ¡Gracias por visitarnos!</p>
-        <div class="row mt-4">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto 1</h5>
-                        <p class="card-text">Descripción breve del producto 1.</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
-                    </div>
+    <header>
+        <div class="nav">
+            <div class="container">
+                <div class="brand">Gateway Shop</div>
+                <div class="links">
+                    <a class="btn" href="index.html">Inicio</a>
+                    <a class="btn" href="shop.html">Tienda</a>
+                    <a class="btn" href="contact.html">Contacto</a>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto 2</h5>
-                        <p class="card-text">Descripción breve del producto 2.</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
-                    </div>
+                <div class="cart">
+                    <a class="btn" href="shop.html">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
                 </div>
+                <svg
+                  class="outline"
+                  overflow="visible"
+                  width="400"
+                  height="60"
+                  viewBox="0 0 400 60"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    class="rect"
+                    pathLength="100"
+                    x="0"
+                    y="0"
+                    width="400"
+                    height="60"
+                    fill="transparent"
+                    stroke-width="5"
+                  ></rect>
+                </svg>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto 3</h5>
-                        <p class="card-text">Descripción breve del producto 3.</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
-                    </div>
+        </div>
+    </header>
+
+    <header class="hero hero-compact" style="margin-top:1rem;">
+        <div class="container" style="display:flex;align-items:center;gap:1rem;">
+            <div style="flex:1;min-height:120px;background-image:url('img/market2.jpg');background-size:cover;background-position:center;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.08)"></div>
+            <div style="flex:2;">
+                <h2>Encuentra lo mejor para tu casa</h2>
+                <p>Productos seleccionados, entregas seguras y ofertas exclusivas.</p>
+                <div style="margin-top:.5rem;display:flex;gap:.5rem;">
+                    <input id="search" placeholder="Buscar productos..." style="flex:1;padding:.6rem;border-radius:8px;border:1px solid #e5e5e5">
+                    <select id="category" style="padding:.6rem;border-radius:8px;border:1px solid #e5e5e5">
+                        <option value="">Todas las categorías</option>
+                    </select>
                 </div>
             </div>
         </div>
-    </div>
-    {% endblock %}
+    </header>
 
+    <main class="container" style="display:flex;gap:1rem;align-items:start;padding:1rem;">
+        <section id="productos" style="flex:2;">
+            <h2>Productos</h2>
+            <div class="row" id="product-list">
+                <!-- I PROD -->
+            </div>
+        </section>
+
+        <aside style="flex:1;">
+            <h2>Carrito</h2>
+            <div id="cart-items"></div>
+            <div style="margin-top:1rem;text-align:right;">
+                <button id="checkout-btn" class="btn" style="background:#ff8800;color:#fff;border:none;padding:.6rem 1rem;border-radius:8px;">Finalizar compra</button>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Gateway Shop. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+        <!-- I CART -->
 </body>
-
 </html>
