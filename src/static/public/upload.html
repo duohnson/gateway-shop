@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de subida de productos</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/upload.js" defer></script>
+  <style>
+    .panel {
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .panel h2 {
+      margin-bottom: 1rem;
+    }
+
+    .panel label {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    .panel input,
+    .panel textarea {
+      width: 100%;
+      padding: .5rem;
+      margin-top: .3rem;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+
+    .panel button {
+      margin-top: 1.5rem;
+      width: 100%;
+      background: #ff8800;
+      color: #fff;
+      border: none;
+      padding: .7rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .panel .success {
+      color: #2ecc40;
+      margin-top: 1rem;
+    }
+
+    .panel .error {
+      color: #e74c3c;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="display:flex;gap:2rem;justify-content:center;align-items:flex-start;">
+    <div class="panel" style="flex:1;">
+      <h2>Subir nuevo producto</h2>
+      <form id="upload-form">
+        <label>Nombre
+          <input type="text" name="nombre" required>
+        </label>
+        <label>Precio
+          <input type="number" name="precio" step="0.01" required>
+        </label>
+        <label>Imagen
+          <input type="file" name="img" id="img-file" accept="image/*" required>
+        </label>
+        <div id="preview-img" style="margin-top:.5rem;"></div>
+        <label>Descripción
+          <textarea name="desc" rows="2" required></textarea>
+        </label>
+        <label>Categoría
+          <select name="categoria" id="categoria-select" required></select>
+        </label>
+        <div style="margin-top:.5rem;">
+          <input type="text" id="nueva-categoria" placeholder="Nueva categoría..."
+            style="width:70%;padding:.3rem;border-radius:6px;border:1px solid #ddd;">
+          <button type="button" id="agregar-categoria"
+            style="width:28%;background:#2ecc40;color:#fff;margin-left:2%;border:none;padding:.3rem .5rem;border-radius:6px;">Agregar</button>
+        </div>
+        <button type="submit">Subir producto</button>
+        <div class="success" id="success-msg" style="display:none;">Producto subido correctamente.</div>
+        <div class="error" id="error-msg" style="display:none;"></div>
+      </form>
+    </div>
+    <div class="panel" style="flex:1;">
+      <h2>Modificar/Borrar producto</h2>
+      <form id="edit-form">
+        <label>Selecciona producto
+          <select id="edit-select" name="id" required></select>
+        </label>
+        <label>Nombre
+          <input type="text" name="nombre" required>
+        </label>
+        <label>Precio
+          <input type="number" name="precio" step="0.01" required>
+        </label>
+        <label>Imagen (URL o ruta)
+          <input type="text" name="img" id="edit-img-url" required>
+          <input type="file" id="edit-img-file" accept="image/*">
+        </label>
+        <div id="edit-preview-img" style="margin-top:.5rem;"></div>
+        <label>Descripción
+          <textarea name="desc" rows="2" required></textarea>
+        </label>
+        <label>Categoría
+          <select name="categoria" id="edit-categoria-select" required></select>
+        </label>
+        <button type="submit">Modificar producto</button>
+        <button type="button" id="delete-btn" style="background:#e74c3c;margin-top:.5rem;">Borrar producto</button>
+        <div class="success" id="edit-success-msg" style="display:none;">Producto modificado correctamente.</div>
+        <div class="error" id="edit-error-msg" style="display:none;"></div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
