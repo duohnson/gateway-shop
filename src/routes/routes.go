@@ -15,10 +15,12 @@ func Router(app *fiber.App) {
 	//_________________PAGES_________________//
 	//======================================//
 	app.Get("/", methodsget.IndexPage) //asi es como debes definir las rutas de las paginas. Ve al modulo de methodGET/pages para crear las funciones de carga de las paginas
+	app.Get("/shop", methodsget.ShopPage)
+	app.Get("/contact", methodsget.ContactPage)
 	//======================================//
 	app.Get("/shop", methodsget.ShopPage)
-	app.Get("/:class", methodsget.GetProducts)
-	app.Get("/:class/:name", methodsget.GetProducts)
+	app.Get("/:category", methodsget.GetProducts)
+	app.Get("/:category/:name", methodsget.GetProducts)
 
 	////////////////////////////////////////
 	//
@@ -28,6 +30,7 @@ func Router(app *fiber.App) {
 	//_____________METHODS_POST___________//
 	////////////////////////////////////////
 	app.Post("/buy", methodspost.GetProductsSelected)
+	app.Post("/create/product", methodspost.CreateProduct)
 	////////////////////////////////////////
 	//
 	//====================================//
