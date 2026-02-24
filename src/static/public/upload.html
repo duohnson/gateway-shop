@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,27 +13,17 @@
       padding: 2rem;
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-
-    .panel h2 {
-      margin-bottom: 1rem;
-    }
-
-    .panel label {
-      display: block;
-      margin-top: 1rem;
-    }
-
-    .panel input,
-    .panel textarea {
+    .panel h2 { margin-bottom: 1rem; }
+    .panel label { display:block; margin-top:1rem; }
+    .panel input, .panel textarea {
       width: 100%;
       padding: .5rem;
       margin-top: .3rem;
       border-radius: 6px;
       border: 1px solid #ddd;
     }
-
     .panel button {
       margin-top: 1.5rem;
       width: 100%;
@@ -46,19 +35,10 @@
       font-size: 1rem;
       cursor: pointer;
     }
-
-    .panel .success {
-      color: #2ecc40;
-      margin-top: 1rem;
-    }
-
-    .panel .error {
-      color: #e74c3c;
-      margin-top: 1rem;
-    }
+    .panel .success { color: #2ecc40; margin-top:1rem; }
+    .panel .error { color: #e74c3c; margin-top:1rem; }
   </style>
 </head>
-
 <body>
   <div style="display:flex;gap:2rem;justify-content:center;align-items:flex-start;">
     <div class="panel" style="flex:1;">
@@ -81,10 +61,8 @@
           <select name="categoria" id="categoria-select" required></select>
         </label>
         <div style="margin-top:.5rem;">
-          <input type="text" id="nueva-categoria" placeholder="Nueva categoría..."
-            style="width:70%;padding:.3rem;border-radius:6px;border:1px solid #ddd;">
-          <button type="button" id="agregar-categoria"
-            style="width:28%;background:#2ecc40;color:#fff;margin-left:2%;border:none;padding:.3rem .5rem;border-radius:6px;">Agregar</button>
+          <input type="text" id="nueva-categoria" placeholder="Nueva categoría..." style="width:70%;padding:.3rem;border-radius:6px;border:1px solid #ddd;">
+          <button type="button" id="agregar-categoria" style="width:28%;background:#2ecc40;color:#fff;margin-left:2%;border:none;padding:.3rem .5rem;border-radius:6px;">Agregar</button>
         </div>
         <button type="submit">Subir producto</button>
         <div class="success" id="success-msg" style="display:none;">Producto subido correctamente.</div>
@@ -122,5 +100,4 @@
     </div>
   </div>
 </body>
-
 </html>

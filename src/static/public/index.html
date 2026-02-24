@@ -1,52 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gateway Shop - Tu Marketplace</title>
-    <link rel="stylesheet" href="public/css/navbar-ejemplo.css">
+    <link rel="stylesheet" href="css/navbar-ejemplo.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="public/css/navbar.css">
-    <link rel="stylesheet" href="public/css/style.css">
-
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/navbar.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/index.js" defer></script>
 </head>
-
 <body>
     <header>
         <div class="nav">
             <div class="container">
                 <div class="brand">Gateway Shop</div>
                 <div class="links">
-                    <a class="btn" href="/">Inicio</a>
-                    <a class="btn" href="/shop">Tienda</a>
-                    <a class="btn" href="/contact">Contacto</a>
+                    <a class="btn" href="index.html">Inicio</a>
+                    <a class="btn" href="shop.html">Tienda</a>
+                    <a class="btn" href="contact.html">Contacto</a>
                 </div>
                 <div class="cart">
-                    <a class="btn" href="/shop">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
+                    <a class="btn" href="shop.html">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
                 </div>
-                <svg class="outline" overflow="visible" width="400" height="60" viewBox="0 0 400 60"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <rect class="rect" pathLength="100" x="0" y="0" width="400" height="60" fill="transparent"
-                        stroke-width="5"></rect>
+                <svg
+                  class="outline"
+                  overflow="visible"
+                  width="400"
+                  height="60"
+                  viewBox="0 0 400 60"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    class="rect"
+                    pathLength="100"
+                    x="0"
+                    y="0"
+                    width="400"
+                    height="60"
+                    fill="transparent"
+                    stroke-width="5"
+                  ></rect>
                 </svg>
             </div>
         </div>
     </header>
     <header class="hero hero-carousel">
         <div class="hero-slides">
-            <div class="slide" style="background-image:url('public/img/market.jpg')"
-                data-title="Productos frescos, entrega rápida" data-sub="Compra hoy y recibe en casa"></div>
-            <div class="slide" style="background-image:url('public/img/market2.jpg')" data-title="Ofertas semanales"
-                data-sub="Ahorra en tus compras esenciales"></div>
+            <div class="slide" style="background-image:url('img/market.jpg')" data-title="Productos frescos, entrega rápida" data-sub="Compra hoy y recibe en casa"></div>
+            <div class="slide" style="background-image:url('img/market2.jpg')" data-title="Ofertas semanales" data-sub="Ahorra en tus compras esenciales"></div>
         </div>
         <div class="hero-content container">
             <h1 id="hero-title">Bienvenido a Gateway Shop</h1>
             <p id="hero-sub">Tu marketplace confiable — calidad y velocidad</p>
             <div class="hero-actions">
-                <a class="btn" href="/shop">Ir a la Tienda</a>
-                <a class="btn ghost" href="/contact">Contactar</a>
+                <a class="btn" href="shop.html">Ir a la Tienda</a>
+                <a class="btn ghost" href="contact.html">Contactar</a>
             </div>
         </div>
         <div class="hero-controls">
@@ -66,5 +79,4 @@
         </div>
     </footer>
 </body>
-
 </html>

@@ -1,23 +1,17 @@
 package models
 
 type Card struct {
-	Items []Product `json:"items"`
+	Total_amount int       `json:"total_amount"`
+	Items        []Product `json:"items"`
 }
 type Product struct {
 	Id       int     `josn:"id"`
-	Category string  `json:"category"`
+	Class    string  `json:"class"`
 	Name     string  `json:"name"`
 	Price    float64 `json:"price"`
+	Quantity int     `json:"quantity"`
 	Brand    string  `json:"brand"`
 	Color    string  `json:"color"`
-	Aviable  bool
-	Image    string `josn:"image"`
-}
-type NewProduct struct {
-	Category string  `json:"category"`
-	Name     string  `json:"name"`
-	Price    float64 `json:"price"`
-	Brand    string  `json:"brand"`
-	Color    string  `json:"color"`
+	Aviable  bool    `josn:"aviable"`
 	Image    string  `json:"image"`
 }

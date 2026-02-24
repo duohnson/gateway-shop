@@ -1,99 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Contacto - Gateway Shop</title>
-  <link rel="stylesheet" href="public/css/navbar.css">
-  <link rel="stylesheet" href="public/css/style.css">
-  <script src="public/js/navbar.js" defer></script>
-  <script src="public/js/contact.js" defer></script>
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/navbar.js" defer></script>
+  <script src="js/contact.js" defer></script>
   <style>
-    .team {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      align-items: stretch;
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .designer.card {
-      width: 260px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 1.5rem;
-    }
-
-    .designer.card .avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 0.6rem;
-      border: 4px solid rgba(255, 136, 0, 0.12);
-      background: linear-gradient(180deg, #fff0, #0000);
-    }
-
-    .designer.card h3 {
-      margin: 0 0 .5rem 0
-    }
-
-    .designer.card a {
-      color: var(--primary);
-      font-weight: 700
-    }
-
-    form.contact-form {
-      max-width: 620px;
-      margin: 1.5rem auto 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem
-    }
-
-    form.contact-form label {
-      display: flex;
-      flex-direction: column;
-      gap: .25rem;
-      font-weight: 600
-    }
-
-    @media(max-width:720px) {
-      .team {
-        flex-direction: column;
-        align-items: center
-      }
-
-      .designer.card {
-        width: 90%
-      }
-    }
+    .team { display:flex; gap:1rem; justify-content:center; align-items:stretch; width:100%; max-width:900px; margin:0 auto; }
+    .designer.card{ width:260px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:1.5rem; }
+    .designer.card .avatar{ width:96px; height:96px; border-radius:50%; object-fit:cover; margin-bottom:0.6rem; border:4px solid rgba(255,136,0,0.12); background:linear-gradient(180deg,#fff0,#0000); }
+    .designer.card h3{ margin:0 0 .5rem 0 }
+    .designer.card a{ color:var(--primary); font-weight:700 }
+    form.contact-form{ max-width:620px; margin:1.5rem auto 0; display:flex; flex-direction:column; gap:0.75rem }
+    form.contact-form label{ display:flex; flex-direction:column; gap:.25rem; font-weight:600 }
+    @media(max-width:720px){ .team{flex-direction:column;align-items:center} .designer.card{width:90%} }
   </style>
 </head>
-
 <body>
   <header>
     <div class="nav">
       <div class="container">
         <div class="brand">Gateway Shop</div>
         <div class="links">
-          <a class="btn" href="/">Inicio</a>
-          <a class="btn" href="/shop">Tienda</a>
-          <a class="btn" href="/contact">Contacto</a>
+          <a class="btn" href="index.html">Inicio</a>
+          <a class="btn" href="shop.html">Tienda</a>
+          <a class="btn" href="contact.html">Contacto</a>
         </div>
         <div class="cart">
-          <a class="btn" href="/shop">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
+          <a class="btn" href="shop.html">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
         </div>
-        <svg class="outline" overflow="visible" width="400" height="60" viewBox="0 0 400 60"
-          xmlns="http://www.w3.org/2000/svg">
-          <rect class="rect" pathLength="100" x="0" y="0" width="400" height="60" fill="transparent" stroke-width="5">
-          </rect>
+        <svg class="outline" overflow="visible" width="400" height="60" viewBox="0 0 400 60" xmlns="http://www.w3.org/2000/svg">
+          <rect class="rect" pathLength="100" x="0" y="0" width="400" height="60" fill="transparent" stroke-width="5"></rect>
         </svg>
       </div>
     </div>
@@ -104,14 +44,12 @@
       <div class="designer card" data-username="duohnson">
         <img class="avatar" alt="duohnson avatar">
         <h3 class="gh-name">duohnson</h3>
-        <p><a class="gh-link" href="https://github.com/duohnson" target="_blank"
-            rel="noopener noreferrer">github.com/duohnson</a></p>
+        <p><a class="gh-link" href="https://github.com/duohnson" target="_blank" rel="noopener noreferrer">github.com/duohnson</a></p>
       </div>
       <div class="designer card" data-username="P3terPl4y">
         <img class="avatar" alt="P3terPl4y avatar">
         <h3 class="gh-name">P3terPl4y</h3>
-        <p><a class="gh-link" href="https://github.com/P3terPl4y" target="_blank"
-            rel="noopener noreferrer">github.com/P3terPl4y</a></p>
+        <p><a class="gh-link" href="https://github.com/P3terPl4y" target="_blank" rel="noopener noreferrer">github.com/P3terPl4y</a></p>
       </div>
     </section>
 
@@ -135,11 +73,6 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2026 Gateway Shop. Todos los derechos reservados.</p>
-    </div>
-  </footer>
+  <footer class="footer"><div class="container"><p>&copy; 2026 Gateway Shop. Todos los derechos reservados.</p></div></footer>
 </body>
-
 </html>

@@ -11,9 +11,9 @@ import (
 
 func GetProducts(c fiber.Ctx) error {
 	query := "SELECT * FROM products WHERE"
-	var category string = c.Params("category")
-	if category != "" && !strings.Contains(category, "=") && !strings.Contains(category, ",") && !strings.Contains(category, "'") {
-		query += fmt.Sprintf(` category="%s"`, category)
+	var class string = c.Params("class")
+	if class != "" && !strings.Contains(class, "=") && !strings.Contains(class, ",") && !strings.Contains(class, "'") {
+		query += fmt.Sprintf(` class="%s"`, class)
 	}
 	var name string = c.Params("name")
 	if name != "" && !strings.Contains(name, "=") && !strings.Contains(name, ",") && !strings.Contains(name, "'") {
@@ -27,7 +27,7 @@ func GetProducts(c fiber.Ctx) error {
 	var list []models.Product
 	for rows.Next() {
 		var product models.Product
-		err := rows.Scan(&product.Id, &product.Name, &product.Category, &product.Price, &product.Brand, &product.Color, &product.Aviable, &product.Image)
+		err := rows.Scan(&product.Id, &product.Name, &product.Class, &product.Price, &product.Quantity, &product.Brand, &product.Color, &product.Aviable, &product.Image)
 		if err != nil {
 			return &fiber.Error{Message: err.Error(), Code: 500}
 		}
