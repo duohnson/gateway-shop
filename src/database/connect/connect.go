@@ -63,15 +63,17 @@ func ConnectDB() {
 	_, err = DB.Exec(
 		`CREATE TABLE IF NOT EXISTS products (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		name VARCHAR(20),
-		class VARCHAR(20),
+		category VARCHAR(100),
+		name VARCHAR(100),
+		desc VARCHAR(200),
 		price FLOAT NOT NULL,
 		quantity INT NOT NULL,
-		brand VARCHAR(20) NOT NULL,
-		color VARCHAR(10) NOT NULL,
+		brand VARCHAR(50) NOT NULL,
+		color VARCHAR(30) NOT NULL,
 		aviable BOOL NOT NULL,
 		img TEXT NOT NULL
 		);`)
+	// Nuevo campo Desc (descripcion)
 	//---------------------------------------//
 	//
 	//------------------//
@@ -97,3 +99,5 @@ func ConnectDB() {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
+
+// changes in to varcha, 20 to 100 beast, and 20 30 but ajusted a bit //

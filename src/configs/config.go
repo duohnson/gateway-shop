@@ -19,8 +19,9 @@ var SERVER_PORT = ":3500"
 /////////////////
 //================================//
 
-var STATIC_FILES_PATH = "./static/public/"
+var STATIC_FILES_PATH = "./static/"
 var PRODUCTS_PATH = "./products/"
+var IMAGES_PATH = STATIC_FILES_PATH + "public/img/products"
 
 //================================//
 //
