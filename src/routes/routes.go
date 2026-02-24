@@ -28,6 +28,8 @@ func Router(app *fiber.App) {
 	//_____________METHODS_POST___________//
 	////////////////////////////////////////
 	app.Post("/buy", methodspost.GetProductsSelected)
+	app.Post("/api/productos", methodspost.CreateProduct)
+	app.Post("/api/upload-img", methodspost.UploadImage)
 	////////////////////////////////////////
 	//
 	//====================================//

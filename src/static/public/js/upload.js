@@ -141,27 +141,44 @@ async function handleUploadSubmit(e) {
         return;
     }
     
-    // PREPARE form data for API
-    const data = new FormData();
-    data.append('nombre', nombre);
-    data.append('precio', precio);
-    data.append('desc', desc);
-    data.append('categoria', categoria);
-    data.append('img', imgFile);
-    
+    // UPLOAD IMAGE FIRST
+    const imgForm = new FormData();
+    imgForm.append('img', imgFile);
+    let imgUrl = '';
     try {
-        // SEND to server API
-        const res = await fetch('/api/productos', {
-            method: 'POST',
-            body: data
-        });
-        
+        const imgRes = await fetch('/api/upload-img', { method: 'POST', body: imgForm });
+        if (!imgRes.ok) {
+            showMessage('error-msg', 'Error al subir la imagen.');
+            return;
+        }
+        imgUrl = await imgRes.text();
+    } catch (err) {
+        showMessage('error-msg', 'Error de conexión al subir imagen.');
+        return;
+    }
+
+    // PREPARE product data for API (send plain form values)
+    const prodForm = new FormData();
+    prodForm.append('nombre', nombre);
+    prodForm.append('precio', String(precio));
+    prodForm.append('desc', desc);
+    prodForm.append('categoria', categoria);
+    prodForm.append('img', imgUrl);
+
+    try {
+        const res = await fetch('/api/productos', { method: 'POST', body: prodForm });
         if (res.ok) {
-            // SUCCESS - reset form
             form.reset();
             document.getElementById('preview-img').innerHTML = '';
             showMessage('success-msg', 'Producto subido correctamente.');
             cargarEditSelect();
+
+            // update localStorage and reload shop
+            let productos = localStorage.getItem('productos');
+            productos = productos ? JSON.parse(productos) : [];
+            productos.push({ id: Date.now(), nombre, precio, desc, categoria, img: imgUrl });
+            localStorage.setItem('productos', JSON.stringify(productos));
+            window.location.href = 'shop.html';
         } else {
             showMessage('error-msg', 'Error al subir el producto.');
         }

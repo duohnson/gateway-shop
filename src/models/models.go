@@ -15,3 +15,16 @@ type Product struct {
 	Aviable  bool    `josn:"aviable"`
 	Image    string  `json:"image"`
 }
+
+type NewProduct struct {
+	Name     string  `json:"name"`
+	Category string  `json:"category"`
+	Price    float64 `json:"price"`
+	Brand    string  `json:"brand"`
+	Color    string  `json:"color"`
+	Image    string  `json:"image"`
+}
+
+// no had a estructure for the new product to add, a dict, so i create it //
+// TRASLATEEEE //
+// no tenias una estructura del nuevo producto a agregar, un dict, la cree //
