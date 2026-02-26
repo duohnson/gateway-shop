@@ -11,7 +11,7 @@ func GetProductsSelected(c fiber.Ctx) error {
 	data := new(models.Card)
 	err := c.Bind().Body(data)
 	if err != nil {
-		return &fiber.Error{Message: "Error al obtener datos del carrito", Code: 500}
+		return &fiber.Error{Message: err.Error(), Code: 500}
 	}
 	for _, v := range data.Items {
 		fmt.Println(fmt.Sprint(v.Name, ":", v.Price))

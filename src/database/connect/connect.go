@@ -63,9 +63,9 @@ func ConnectDB() {
 	_, err = DB.Exec(
 		`CREATE TABLE IF NOT EXISTS products (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		name VARCHAR(100),
 		category VARCHAR(100),
-		class VARCHAR(20),
+		name VARCHAR(100),
+		desc VARCHAR(200),
 		price FLOAT NOT NULL,
 		quantity INT NOT NULL,
 		brand VARCHAR(50) NOT NULL,
@@ -73,6 +73,7 @@ func ConnectDB() {
 		aviable BOOL NOT NULL,
 		img TEXT NOT NULL
 		);`)
+	// Nuevo campo Desc (descripcion)
 	//---------------------------------------//
 	//
 	//------------------//

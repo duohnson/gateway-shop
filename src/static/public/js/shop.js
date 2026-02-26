@@ -9,7 +9,7 @@ let carrito = [];
    =========================== */
 
 // LOAD products from JSON file or localStorage
-function cargarProductos() {
+async function cargarProductos(category) {
     // TRY to load from localStorage first
     const guardados = localStorage.getItem('productos');
     if (guardados) {
@@ -17,27 +17,27 @@ function cargarProductos() {
         renderProductos();
         return;
     }
-    
+
     // FALLBACK to fetch from productos.json
-    fetch('productos.json')
+    await fetch('https://localhost:3500/' + category)
         .then(res => res.ok ? res.json() : [])
         .then(data => {
             productos = Array.isArray(data) ? data : [];
-            
+
             // SAVE to localStorage for future use
             if (productos.length > 0) {
                 localStorage.setItem('productos', JSON.stringify(productos));
             }
-            
+
             renderProductos();
         })
         .catch(() => {
             // IF both fail, use default products
             productos = [
-                { id: 1, nombre: 'Huevos', precio: 2.50, img: 'img/huevos.jpg', desc: 'Docena de huevos frescos.', categoria: 'alimentos' },
-                { id: 2, nombre: 'Leche', precio: 1.80, img: 'img/leche.jpg', desc: 'Leche entera 1L.', categoria: 'bebidas' },
-                { id: 3, nombre: 'Manzanas', precio: 3.20, img: 'img/manzanas.jpg', desc: 'Bolsa de manzanas rojas (1kg).', categoria: 'alimentos' },
-                { id: 4, nombre: 'Pan', precio: 1.00, img: 'img/pan.jpg', desc: 'Pan fresco artesanal.', categoria: 'panaderia' }
+                { id: 1, name: 'Huevos', price: 2.50, image: 'img/huevos.jpg', desc: 'Docena de huevos frescos.', category: 'alimentos' },
+                { id: 2, name: 'Leche', price: 1.80, image: 'img/leche.jpg', desc: 'Leche entera 1L.', category: 'bebidas' },
+                { id: 3, name: 'Manzanas', price: 3.20, image: 'img/manzanas.jpg', desc: 'Bolsa de manzanas rojas (1kg).', categoria: 'alimentos' },
+                { id: 4, name: 'Pan', price: 1.00, image: 'img/pan.jpg', desc: 'Pan fresco artesanal.', category: 'panaderia' }
             ];
             localStorage.setItem('productos', JSON.stringify(productos));
             renderProductos();
@@ -48,21 +48,21 @@ function cargarProductos() {
 function renderProductos() {
     const productList = document.getElementById('product-list');
     if (!productList) return;
-    
+
     // CHECK if no products
     if (!productos.length) {
         productList.innerHTML = '<p>No hay productos disponibles.</p>';
         return;
     }
-    
+
     // BUILD product cards HTML
     productList.innerHTML = productos.map(prod => `
-        <div class="card producto" data-id="${prod.id}" data-nombre="${prod.nombre}" data-precio="${prod.precio}" data-img="${prod.img}" data-categoria="${prod.categoria}">
-            <img src="${prod.img}" alt="${prod.nombre}">
-            <h3>${prod.nombre}</h3>
+        <div class="card producto" data-id="${prod.id}" data-nombre="${prod.name}" data-precio="${prod.price}" data-img="${prod.image}" data-categoria="${prod.categoria}">
+            <img src="${prod.image}" alt="${prod.name}">
+            <h3>${prod.name}</h3>
             <p>${prod.desc}</p>
             <div class="card-actions">
-                <span class="precio">$${prod.precio.toFixed(2)}</span>
+                <span class="precio">$${prod.price.toFixed(2)}</span>
                 <div style="display:flex;gap:.5rem;align-items:center">
                     <button class="btn small quick-view" aria-label="Vista rápida">
                         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4 4 0 110-8 4 4 0 010 8z" fill="#fff"/></svg>
@@ -74,7 +74,7 @@ function renderProductos() {
             </div>
         </div>
     `).join('');
-    
+
     // ADD fade-in animation to cards
     const cards = productList.querySelectorAll('.card');
     cards.forEach((card, i) => {
@@ -86,7 +86,7 @@ function renderProductos() {
             card.style.transform = 'translateY(0)';
         }, 100 * i);
     });
-    
+
     // ATTACH event listeners to add to cart buttons
     productList.querySelectorAll('.agregar-carrito').forEach(btn => {
         btn.addEventListener('click', e => {
@@ -95,7 +95,7 @@ function renderProductos() {
             const nombre = card.getAttribute('data-nombre');
             const precio = parseFloat(card.getAttribute('data-precio'));
             const img = card.getAttribute('data-img');
-            
+
             // CHECK if product already in cart
             const existente = carrito.find(p => p.id === id);
             if (existente) {
@@ -103,7 +103,7 @@ function renderProductos() {
             } else {
                 carrito.push({ id, nombre, precio, img, cantidad: 1 });
             }
-            
+
             renderCarrito();
         });
     });
@@ -121,7 +121,7 @@ function renderFiltroCategorias() {
             const sel = document.getElementById('category');
             if (!sel) return;
             if (!Array.isArray(cats)) return;
-            
+
             // BUILD category options
             sel.innerHTML = '<option value="">Todas las categorías</option>' +
                 cats.map(c => `<option value="${c}">${c.charAt(0).toUpperCase() + c.slice(1)}</option>`).join('');
@@ -140,17 +140,17 @@ function renderFiltroCategorias() {
 function renderCarrito() {
     const cartItems = document.getElementById('cart-items');
     if (!cartItems) return;
-    
+
     // CHECK if cart is empty
     if (carrito.length === 0) {
         cartItems.innerHTML = '<p>El carrito está vacío.</p>';
-        
+
         // UPDATE navbar cart count
         if (window.updateNavCart) window.updateNavCart(carrito.length);
         window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { length: carrito.length } }));
         return;
     }
-    
+
     // BUILD cart items HTML
     cartItems.innerHTML = carrito.map((item, i) => `
         <div class="card" style="display:flex;align-items:center;gap:1rem;">
@@ -163,7 +163,7 @@ function renderCarrito() {
             <button class="btn quitar-item" data-index="${i}" style="background:#fff;color:#ff8800;border:1px solid #ff8800;">Quitar</button>
         </div>
     `).join('') + `<div style="text-align:right;margin-top:1rem;"><strong>Total: $${carrito.reduce((a, b) => a + b.precio * b.cantidad, 0).toFixed(2)}</strong></div>`;
-    
+
     // ATTACH event listeners to remove buttons
     cartItems.querySelectorAll('.quitar-item').forEach(btn => {
         btn.addEventListener('click', e => {
@@ -172,7 +172,7 @@ function renderCarrito() {
             renderCarrito();
         });
     });
-    
+
     // UPDATE navbar cart count
     if (window.updateNavCart) window.updateNavCart(carrito.length);
     window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { length: carrito.length } }));
@@ -185,10 +185,9 @@ function renderCarrito() {
 // INIT everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     // LOAD products and categories
-    cargarProductos();
     renderFiltroCategorias();
     renderCarrito();
-    
+
     // HANDLE checkout button
     const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) {
@@ -197,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('El carrito está vacío.');
                 return;
             }
-            
+
             // PROCESS checkout
             alert('¡Gracias por tu compra!');
             carrito = [];
@@ -205,3 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+document.getElementById("category").addEventListener("change", async () => {
+    await cargarProductos(document.getElementById("category").value)
+})

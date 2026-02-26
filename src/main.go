@@ -3,6 +3,7 @@ package main
 import (
 	"App/src/configs"
 	"App/src/database/connect"
+	"App/src/middlewares"
 	"App/src/routes"
 	"log"
 
@@ -30,11 +31,13 @@ func main() {
 	//==================//
 	app.Use(logger.New())
 	//==================//
-	//
 	//==========================================//
-	app.Use(static.New(configs.STATIC_FILES_PATH))
+	app.Use(static.New(configs.STATIC_FILES_PATH + "public/"))
 	//==========================================//
 	//
+	//==================//
+	app.Use("/admin", middlewares.AuthMiddleware)
+	//==================//
 	//================//
 	routes.Router(app)
 	//================//
@@ -47,3 +50,4 @@ func main() {
 	//===========================================================//
 	//////////////////////////////////////////////////////////////////////////////////////////
 }
+//COOOOOOOOOOOMIT

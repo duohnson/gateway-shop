@@ -1,6 +1,7 @@
 package methodspost
 
 import (
+	"App/src/configs"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -18,7 +19,7 @@ func UploadImage(c fiber.Ctx) error {
 	}
 
 	// ensure destination dir exists
-	dstDir := "./static/public/img/products"
+	dstDir := configs.IMAGES_PATH
 	if err := os.MkdirAll(dstDir, os.ModePerm); err != nil {
 		return &fiber.Error{Message: err.Error(), Code: 500}
 	}

@@ -6,9 +6,9 @@ var CreateTableOfTest = `CREATE TABLE IF NOT EXISTS tests (
 	);`
 var CreateTableOfProducts = `CREATE TABLE IF NOT EXISTS products (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	name VARCHAR(20),
     category VARCHAR(20),
-	class VARCHAR(20),
+	name VARCHAR(20),
+	desc VARCHAR(200),
 	price FLOAT NOT NULL,
 	quantity INT NOT NULL,
 	brand VARCHAR(20) NOT NULL,
@@ -18,3 +18,4 @@ var CreateTableOfProducts = `CREATE TABLE IF NOT EXISTS products (
 	);`
 
 // basicly, integer auto-increment and quantity stuff //
+// Nuevo campo Desc (descripcion)
