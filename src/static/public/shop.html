@@ -17,76 +17,52 @@
         <div class="nav">
             <div class="container">
                 <div class="brand">Gateway Shop</div>
-                <div class="links">
-                    <a class="btn" href="index.html">Inicio</a>
-                    <a class="btn" href="shop.html">Tienda</a>
-                    <a class="btn" href="contact.html">Contacto</a>
-                </div>
+                <nav class="links">
+                    <a class="btn" style="color: #e5e5e5;" href="index.html">Inicio</a>
+                    <a class="btn" style="color: #e5e5e5;" href="shop.html">Tienda</a>
+                    <a class="btn" style="color: #e5e5e5;" href="contact.html">Contacto</a>
+                </nav>
                 <div class="cart">
-                    <a class="btn" href="shop.html">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
-                </div>
-                <svg
-                  class="outline"
-                  overflow="visible"
-                  width="400"
-                  height="60"
-                  viewBox="0 0 400 60"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    class="rect"
-                    pathLength="100"
-                    x="0"
-                    y="0"
-                    width="400"
-                    height="60"
-                    fill="transparent"
-                    stroke-width="5"
-                  ></rect>
-                </svg>
-            </div>
-        </div>
+                    <a class="btn" style="color: #e5e5e5;" href="shop.html">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
     </header>
 
-    <header class="hero hero-compact" style="margin-top:1rem;">
-        <div class="container" style="display:flex;align-items:center;gap:1rem;">
-            <div style="flex:1;min-height:120px;background-image:url('img/market2.jpg');background-size:cover;background-position:center;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.08)"></div>
-            <div style="flex:2;">
-                <h2>Encuentra lo mejor para tu casa</h2>
-                <p>Productos seleccionados, entregas seguras y ofertas exclusivas.</p>
+    <section class="hero" style="margin-top:1rem;padding:2rem 0">
+        <div class="hero-inner container">
+            <div style="flex:1;min-height:120px;background-image:url('img/market2.jpg');background-size:cover;background-position:center;border-radius:12px"></div>
+            <div style="flex:2">
+                <h2 style="color: #e5e5e5;">Encuentra lo mejor para tu casa</h2>
+                <p style="color: #e5e5e5;">Productos seleccionados, entregas seguras y ofertas exclusivas.</p>
                 <div style="margin-top:.5rem;display:flex;gap:.5rem;">
                     <input id="search" placeholder="Buscar productos..." style="flex:1;padding:.6rem;border-radius:8px;border:1px solid #e5e5e5">
                     <select id="category" style="padding:.6rem;border-radius:8px;border:1px solid #e5e5e5">
-                        <option value="">Todas las categorías</option>
+                        <option;" value="">Todas las categorías</option>
                     </select>
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
-    <main class="container" style="display:flex;gap:1rem;align-items:start;padding:1rem;">
-        <section id="productos" style="flex:2;">
-            <h2>Productos</h2>
-            <div class="row" id="product-list">
-                <!-- I PROD -->
-            </div>
-        </section>
+    <main>
+        <div class="container" style="display:flex;gap:1rem;align-items:start;padding:1rem 0;">
+            <section id="productos" style="flex:2">
+                <h2>Productos</h2>
+                <div class="row" id="product-list"></div>
+            </section>
 
-        <aside style="flex:1;">
-            <h2>Carrito</h2>
-            <div id="cart-items"></div>
-            <div style="margin-top:1rem;text-align:right;">
-                <button id="checkout-btn" class="btn" style="background:#ff8800;color:#fff;border:none;padding:.6rem 1rem;border-radius:8px;">Finalizar compra</button>
-            </div>
-        </aside>
+            <aside style="flex:1">
+                <h2>Carrito</h2>
+                <div id="cart-items"></div>
+                <div style="margin-top:1rem;text-align:right">
+                    <button id="checkout-btn" class="btn" style="background:var(--accent-strong);color:#fff;border:none;padding:.6rem 1rem;border-radius:8px">Finalizar compra</button>
+                </div>
+            </aside>
+        </div>
     </main>
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Gateway Shop. Todos los derechos reservados.</p>
+            <p>&copy; 2026 Gateway Shop. Todos los derechos reservados. Created by duohnson.</p>
         </div>
     </footer>
-
-        <!-- I CART -->
 </body>
 </html>
