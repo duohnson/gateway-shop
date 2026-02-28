@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Checkout - Gateway Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/ui.js" defer></script>
+  <script src="js/paypal.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="container">
+        <div class="brand">Gateway Shop</div>
+        <nav class="links">
+          <a class="btn" href="index.html">Inicio</a>
+          <a class="btn" href="shop.html">Tienda</a>
+        </nav>
+        <div class="cart">
+          <a class="btn" href="shop.html">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
+        </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2>Pago con PayPal</h2>
+      <div id="order-summary" class="card"></div>
+      <div id="paypal-buttons" style="margin-top:1rem"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><p>&copy; 2026 Gateway Shop. Todos los derechos reservados. Created by duohnson.</p></div>
+  </footer>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD" async></script>
+</body>
+</html>
