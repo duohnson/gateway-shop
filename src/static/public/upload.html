@@ -3,53 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de subida de productos</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Panel de administración - Gateway Shop</title>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tailwind.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <meta name="robots" content="noindex, nofollow">
+  <script src="js/components.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/cart.js" defer></script>
   <script src="js/upload.js" defer></script>
-  <style>
-    .panel {
-      max-width: 400px;
-      margin: 2rem auto;
-      padding: 2rem;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    .panel h2 { margin-bottom: 1rem; }
-    .panel label { display:block; margin-top:1rem; }
-    .panel input, .panel textarea {
-      width: 100%;
-      padding: .5rem;
-      margin-top: .3rem;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-    }
-    .panel button {
-      margin-top: 1.5rem;
-      width: 100%;
-      background: #ff8800;
-      color: #fff;
-      border: none;
-      padding: .7rem;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .panel .success { color: #2ecc40; margin-top:1rem; }
-    .panel .error { color: #e74c3c; margin-top:1rem; }
-  </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="container">
-      <div class="links">
-        <br>
-        <a class="btn" style="margin: 25px;" href="index.html">Inicio</a>
-      </div>
-    </div>
-  </div>
-  <div style="display:flex;gap:2rem;justify-content:center;align-items:flex-start;">
-    <div class="panel" style="flex:1;">
+  <header id="site-header" class="site-header"></header>
+
+  <div class="admin-panels">
+    <div class="panel">
       <h2>Subir nuevo producto</h2>
       <form id="upload-form">
         <label>Nombre
@@ -68,16 +37,16 @@
         <label>Categoría
           <select name="categoria" id="categoria-select" required></select>
         </label>
-        <div style="margin-top:.5rem;">
-          <input type="text" id="nueva-categoria" placeholder="Nueva categoría..." style="width:70%;padding:.3rem;border-radius:6px;border:1px solid #ddd;">
-          <button type="button" id="agregar-categoria" style="width:28%;background:#2ecc40;color:#fff;margin-left:2%;border:none;padding:.3rem .5rem;border-radius:6px;">Agregar</button>
+        <div class="cat-add-row">
+          <input type="text" id="nueva-categoria" placeholder="Nueva categoría...">
+          <button type="button" id="agregar-categoria" class="cat-add-btn">Agregar</button>
         </div>
         <button type="submit">Subir producto</button>
         <div class="success" id="success-msg" style="display:none;">Producto subido correctamente.</div>
         <div class="error" id="error-msg" style="display:none;"></div>
       </form>
     </div>
-    <div class="panel" style="flex:1;">
+    <div class="panel">
       <h2>Modificar/Borrar producto</h2>
       <form id="edit-form">
         <label>Selecciona producto
@@ -101,14 +70,13 @@
           <select name="categoria" id="edit-categoria-select" required></select>
         </label>
         <button type="submit">Modificar producto</button>
-        <button type="button" id="delete-btn" style="background:#e74c3c;margin-top:.5rem;">Borrar producto</button>
+        <button type="button" id="delete-btn" class="delete-btn">Borrar producto</button>
         <div class="success" id="edit-success-msg" style="display:none;">Producto modificado correctamente.</div>
         <div class="error" id="edit-error-msg" style="display:none;"></div>
       </form>
     </div>
   </div>
-    <footer class="footer">
-      <div class="container"><p>&copy; 2026 Gateway Shop. Todos los derechos reservados. Created by duohnson.</p></div>
-    </footer>
-  </body>
-  </html>
+
+  <footer id="site-footer" class="site-footer"></footer>
+</body>
+</html>

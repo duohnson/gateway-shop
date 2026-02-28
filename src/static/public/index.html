@@ -1,57 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gateway Shop - Tu Marketplace</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/navbar.js" defer></script>
-    <script src="js/ui.js" defer></script>
-    <script src="js/main.js" defer></script>
-    <script src="js/index.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gateway Shop - Tu marketplace confiable con los mejores productos, precios y envío rápido.">
+  <meta property="og:title" content="Gateway Shop - Tu Marketplace">
+  <meta property="og:description" content="Calidad, rapidez y los mejores precios en un solo lugar.">
+  <meta property="og:type" content="website">
+  <title>Gateway Shop - Tu Marketplace</title>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tailwind.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <script src="js/components.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/cart.js" defer></script>
+  <script src="js/ui.js" defer></script>
+  <script src="js/index.js" defer></script>
 </head>
 <body>
-    <header>
-        <div class="nav">
-            <div class="container">
-                <div class="brand">Gateway Shop</div>
-                <nav class="links">
-                    <a class="btn" href="index.html">Inicio</a>
-                    <a class="btn" href="shop.html">Tienda</a>
-                    <a class="btn" href="contact.html">Contacto</a>
-                </nav>
-                <div class="cart">
-                    <a class="btn" href="shop.html">Carrito <span class="cart-count" id="nav-cart-count">0</span></a>
-    </header>
+  <header id="site-header" class="site-header"></header>
 
-    <section class="hero">
-        <div class="hero-inner">
-            <div class="hero-copy">
-                <h1>Bienvenido a Gateway Shop</h1>
-                <p>Tu marketplace confiable — calidad, rapidez y los mejores precios.</p>
-                <div class="hero-actions">
-                    <a class="btn" href="shop.html">Ir a la Tienda</a>
-                    <a class="btn ghost" href="contact.html">Contactar</a>
-                </div>
-            </div>
-            <div class="hero-media" style="flex:1;min-height:200px;background-image:url('img/market.jpg');background-size:cover;background-position:center;border-radius:12px"></div>
+  <section class="hero-section">
+    <div class="hero-inner">
+      <div class="hero-content fade-up">
+        <h1 class="text-4xl md:text-5xl font-extrabold">Bienvenido a Gateway Shop</h1>
+        <p class="mt-4 text-lg text-white/90">Tu marketplace confiable — calidad, rapidez y los mejores precios.</p>
+        <div class="mt-6 flex gap-3">
+          <a class="cta" href="shop.html">Ir a la Tienda</a>
+          <a class="cta secondary" style="background-color: rgb(240, 255, 255); border-color: firebrick;" href="contact.html">Contactar</a>
         </div>
-    </section>
-    <main>
-        <div class="container">
-            <section id="productos">
-                <h2>Productos destacados</h2>
-                <div class="row" id="product-list"></div>
-            </section>
+      </div>
+      <div class="hero-media fade-up" style="background-image:url('img/market.jpg');min-height:220px;background-size:cover;background-position:center"></div>
+    </div>
+  </section>
+
+  <main class="-mt-10">
+    <div class="max-w-7xl mx-auto px-4">
+      <section id="productos" class="bg-white rounded-xl p-6 shadow-md">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-red-600">Productos destacados</h2>
+          <a href="shop.html" class="text-sm text-gray-600 hover:underline">Ver todos</a>
         </div>
-    </main>
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 Gateway Shop. Todos los derechos reservados. Created by duohnson.</p>
-        </div>
-    </footer>
+        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
 </body>
 </html>

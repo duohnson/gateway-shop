@@ -1,70 +1,55 @@
-// LOAD GitHub user avatars from API
-async function loadGitHubAvatars() {
-    const cards = document.querySelectorAll('.designer.card[data-username]');
+// contact page - github avatars + form
 
-    // LOOP through each designer card
-    for (const card of cards) {
-        const user = card.getAttribute('data-username');
-        const img = card.querySelector('img.avatar');
-        const nameEl = card.querySelector('.gh-name');
-        const linkEl = card.querySelector('.gh-link');
+async function loadAvatars() {
+  var cards = document.querySelectorAll('.designer.card[data-username]');
 
-        try {
-            // FETCH user data from GitHub API
-            const res = await fetch('https://api.github.com/users/' + encodeURIComponent(user));
+  for (var i = 0; i < cards.length; i++) {
+    var card = cards[i];
+    var user = card.dataset.username;
+    var img = card.querySelector('img.avatar');
+    var nameEl = card.querySelector('.gh-name');
+    var linkEl = card.querySelector('.gh-link');
 
-            if (!res.ok) throw new Error('GitHub API error');
+    try {
+      var res = await fetch('https://api.github.com/users/' + encodeURIComponent(user));
+      if (!res.ok) throw new Error('gh api fail');
+      var data = await res.json();
 
-            const data = await res.json();
-
-            // UPDATE avatar image if availible
-            if (data.avatar_url) {
-                img.src = data.avatar_url;
-            }
-
-            // UPDATE real name if available
-            if (data.name) {
-                nameEl.textContent = data.name;
-            }
-
-            // UPDATE profile link
-            if (linkEl && data.html_url) {
-                linkEl.href = data.html_url;
-            }
-
-        } catch (err) {
-            // FALLBACK avatar if API fails
-            img.src = 'https://avatars.githubusercontent.com/u/583231?v=4';
-            console.warn('Could not load avatar for', user, err);
-        }
+      if (data.avatar_url && img) img.src = data.avatar_url;
+      if (data.name && nameEl) nameEl.textContent = data.name;
+      if (data.html_url && linkEl) linkEl.href = data.html_url;
+    } catch(err) {
+      // fallback avatar if api fails or rate limited
+      if (img) img.src = 'https://avatars.githubusercontent.com/u/583231?v=4';
+      console.warn('could not load avatar for', user, err);
     }
+  }
 }
 
-// HANDLE contact form submission
-function handleContactFormSubmit(e) {
-    e.preventDefault();
+function handleContactSubmit(e) {
+  e.preventDefault();
+  var form = e.target;
+  var fd = new FormData(form);
 
-    const form = e.target;
-    const formData = new FormData(form);
+  // quick validation
+  var nombre = (fd.get('nombre') || '').trim();
+  var email = (fd.get('email') || '').trim();
+  var telefono = (fd.get('telefono') || '').trim();
 
-    // LOG form data to console (for development)
-    console.log('Contact data:', Object.fromEntries(formData.entries()));
+  if (!nombre || !email || !telefono) {
+    showToast('Por favor completa todos los campos');
+    return;
+  }
 
-    // SHOW success message
-    alert('Mensaje enviado. Gracias.');
-
-    // RESET form fields
-    form.reset();
+  // no backend endpoint for this yet, just log it
+  console.log('contact form:', Object.fromEntries(fd.entries()));
+  showToast('Mensaje enviado. ¡Gracias!');
+  form.reset();
 }
 
-// INIT when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // LOAD GitHub avatars
-    loadGitHubAvatars();
+document.addEventListener('DOMContentLoaded', function() {
+  loadAvatars();
 
-    // ATTACH form submit handler
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleContactFormSubmit);
-    }
+  var form = document.getElementById('contact-form');
+  if (form) form.addEventListener('submit', handleContactSubmit);
 });
