@@ -1,4 +1,4 @@
-// contact page - github avatars + form
+// cotnact page - github avtaars + form
 
 async function loadAvatars() {
   var cards = document.querySelectorAll('.designer.card[data-username]');
@@ -19,7 +19,7 @@ async function loadAvatars() {
       if (data.name && nameEl) nameEl.textContent = data.name;
       if (data.html_url && linkEl) linkEl.href = data.html_url;
     } catch(err) {
-      // fallback avatar if api fails or rate limited
+      // falblack avatar if api fails or rate liimted
       if (img) img.src = 'https://avatars.githubusercontent.com/u/583231?v=4';
       console.warn('could not load avatar for', user, err);
     }
@@ -31,7 +31,7 @@ function handleContactSubmit(e) {
   var form = e.target;
   var fd = new FormData(form);
 
-  // quick validation
+  // quick valiadtion
   var nombre = (fd.get('nombre') || '').trim();
   var email = (fd.get('email') || '').trim();
   var telefono = (fd.get('telefono') || '').trim();
@@ -41,7 +41,7 @@ function handleContactSubmit(e) {
     return;
   }
 
-  // no backend endpoint for this yet, just log it
+  // no bakcend endopint for this yet, just log it
   console.log('contact form:', Object.fromEntries(fd.entries()));
   showToast('Mensaje enviado. ¡Gracias!');
   form.reset();

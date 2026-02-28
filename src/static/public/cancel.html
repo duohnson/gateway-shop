@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pago cancelado - Gateway Shop</title>
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tailwind.css">
   <link rel="stylesheet" href="css/custom.css">
   <script src="js/components.js" defer></script>
@@ -17,11 +17,13 @@
 
   <main>
     <div class="container">
-      <div class="card status-card cancel-card">
-        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+      <div class="card status-card">
+        <div class="status-icon warning">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+        </div>
         <h2>Pago cancelado</h2>
         <p>El pago fue cancelado. Puedes intentar nuevamente o revisar tu carrito.</p>
-        <div class="flex gap-3 justify-center mt-4">
+        <div class="flex gap-3 justify-center">
           <a class="btn" href="shop.html">Volver al carrito</a>
           <a class="btn ghost" href="index.html">Inicio</a>
         </div>

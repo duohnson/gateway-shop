@@ -1,6 +1,6 @@
-// admin panel - product upload and management
+// admin panel - prdouct upload and manaegment
 
-// get categories async (no more sync xhr)
+// get cateogries async (no more sync xhr)
 async function getCategorias() {
   var stored = localStorage.getItem('categorias');
   if (stored) {
@@ -92,7 +92,7 @@ async function handleUploadSubmit(e) {
     return;
   }
 
-  // then create the product
+  // then create the prdouct
   var prodForm = new FormData();
   prodForm.append('nombre', nombre);
   prodForm.append('precio', String(precio));
@@ -107,14 +107,14 @@ async function handleUploadSubmit(e) {
       document.getElementById('preview-img').innerHTML = '';
       showMsg('success-msg', 'Producto subido correctamente.');
 
-      // sync local cache so shop page picks it up even if api is slow
+      // sync local cache so shpo page picks it up even if api is slow
       var newProd = { id: Date.now(), nombre: nombre, precio: precio, desc: desc, categoria: categoria, img: imgUrl };
       var prods = getProductos();
       prods.push(newProd);
       setProductos(prods);
       loadEditSelect();
 
-      // also update categories if new
+      // also updat cateogries if new
       var cats = [];
       try { cats = JSON.parse(localStorage.getItem('categorias')) || []; } catch(e) {}
       if (categoria && cats.indexOf(categoria) === -1) {

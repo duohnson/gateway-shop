@@ -1,4 +1,4 @@
-// paypal checkout page
+// paypal chekcout page
 
 function renderOrderSummary() {
   var items = cart.items;
@@ -58,6 +58,6 @@ function initPayPal() {
 
 document.addEventListener('DOMContentLoaded', function() {
   renderOrderSummary();
-  // small delay for paypal sdk to finish loading
+  // small delay for paypal sdk to finish lodaing
   setTimeout(initPayPal, 600);
 });

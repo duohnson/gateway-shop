@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""bulk updat: orange/red palete, 4x4 cards with pagnation, fix contact.html"""
+import os
+
+BASE = os.path.join(os.path.dirname(__file__), '..', 'src', 'static', 'public')
+
+files = {}
+
+# --- contact.html (completly rewrtten, centerd, proper avatar circels) ---
+files['contact.html'] = r'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -86,3 +95,82 @@
   <footer id="site-footer" class="site-footer"></footer>
 </body>
 </html>
+'''
+
+# --- shop.html (grid 4 cols, pagnation placeholdr) ---
+files['shop.html'] = r'''<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tienda Gateway Shop - Encuentra los mejores productos para tu hogar.">
+  <title>Gateway Shop - Tienda</title>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tailwind.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <script src="js/components.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/cart.js" defer></script>
+  <script src="js/ui.js" defer></script>
+  <script src="js/shop.js" defer></script>
+</head>
+<body>
+  <header id="site-header" class="site-header"></header>
+
+  <section class="shop-hero">
+    <div class="shop-hero-inner">
+      <div class="shop-hero-img" style="background-image:url('img/market2.jpg')"></div>
+      <div class="shop-hero-text">
+        <h2>Encuentra lo mejor para tu hogar</h2>
+        <p>Productos seleccionados, entregas seguras y ofertas exclusivas.</p>
+        <div class="search-bar">
+          <input id="search" placeholder="Buscar productos..." />
+          <select id="category">
+            <option value="">Todas las categorías</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="shop-layout">
+      <section id="productos" class="shop-products">
+        <div class="section-header">
+          <h2>Productos</h2>
+          <div class="product-count-label">Mostrando <span id="product-count" style="font-weight:700;color:var(--color-primary)">0</span> productos</div>
+        </div>
+        <div id="product-list" class="product-grid"></div>
+        <div id="pagination" class="pagination"></div>
+      </section>
+
+      <aside class="shop-sidebar">
+        <div class="cart-sidebar">
+          <h2>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+            Carrito
+          </h2>
+          <div id="cart-items"></div>
+          <button id="checkout-btn" type="button" class="checkout-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Finalizar compra
+          </button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+</body>
+</html>
+'''
+
+# wirte html fiels
+for name, content in files.items():
+    path = os.path.join(BASE, name)
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(content.lstrip('\n'))
+    print(f'  ✓ {name}')
+
+print('\nHTML files updated!')
