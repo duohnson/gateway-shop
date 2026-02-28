@@ -9,7 +9,7 @@
   <meta property="og:type" content="website">
   <title>Gateway Shop - Tu Marketplace</title>
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tailwind.css">
   <link rel="stylesheet" href="css/custom.css">
   <script src="js/components.js" defer></script>
@@ -24,25 +24,45 @@
   <section class="hero-section">
     <div class="hero-inner">
       <div class="hero-content fade-up">
-        <h1 class="text-4xl md:text-5xl font-extrabold">Bienvenido a Gateway Shop</h1>
-        <p class="mt-4 text-lg text-white/90">Tu marketplace confiable — calidad, rapidez y los mejores precios.</p>
-        <div class="mt-6 flex gap-3">
-          <a class="cta" href="shop.html">Ir a la Tienda</a>
-          <a class="cta secondary" style="background-color: rgb(240, 255, 255); border-color: firebrick;" href="contact.html">Contactar</a>
+        <p style="font-size:0.875rem;font-weight:600;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 0.5rem">Tu Marketplace de Confianza</p>
+        <h1>Descubre los mejores<br>productos para ti</h1>
+        <p>Calidad premium, envío seguro y los mejores precios en un solo lugar. Encuentra todo lo que necesitas.</p>
+        <div class="hero-actions">
+          <a class="cta" href="shop.html">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Explorar Tienda
+          </a>
+          <a class="cta secondary" href="contact.html">Contactar</a>
+        </div>
+        <div class="hero-stats fade-up">
+          <div class="hero-stat">
+            <div class="number">500+</div>
+            <div class="label">Productos</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number">24h</div>
+            <div class="label">Envío rápido</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number">100%</div>
+            <div class="label">Seguro</div>
+          </div>
         </div>
       </div>
-      <div class="hero-media fade-up" style="background-image:url('img/market.jpg');min-height:220px;background-size:cover;background-position:center"></div>
+      <div class="hero-media fade-up" style="background-image:url('img/market.jpg');min-height:320px;background-size:cover;background-position:center"></div>
     </div>
   </section>
 
-  <main class="-mt-10">
+  <main class="-mt-16">
     <div class="max-w-7xl mx-auto px-4">
-      <section id="productos" class="bg-white rounded-xl p-6 shadow-md">
-        <div class="flex items-center justify-between">
-          <h2 class="text-2xl font-bold text-red-600">Productos destacados</h2>
-          <a href="shop.html" class="text-sm text-gray-600 hover:underline">Ver todos</a>
+      <section id="productos" class="featured-section">
+        <div class="section-header">
+          <h2 style="margin-top: 50px;">Productos Destacados</h2>
+          <a href="shop.html">Ver todos
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
-        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
+        <div id="product-list" class="product-grid"></div>
       </section>
     </div>
   </main>

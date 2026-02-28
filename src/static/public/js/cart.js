@@ -1,4 +1,4 @@
-// centralized cart - single source of truth for all pages
+// centarlized cart - single source of truth for all pages
 
 var cart = {
   items: [],
@@ -17,7 +17,7 @@ var cart = {
   save: function() {
     try {
       localStorage.setItem('carrito', JSON.stringify(this.items));
-    } catch(e) { /* storage full or private browsing, ignore */ }
+    } catch(e) { /* stroage full or prviate broswing, ignore */ }
     this._badge();
     window.dispatchEvent(new CustomEvent('cartUpdated', {
       detail: { count: this.items.length }

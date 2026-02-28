@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de administración - Gateway Shop</title>
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tailwind.css">
   <link rel="stylesheet" href="css/custom.css">
   <meta name="robots" content="noindex, nofollow">
@@ -16,6 +16,11 @@
 </head>
 <body>
   <header id="site-header" class="site-header"></header>
+
+  <div style="text-align:center;padding:2rem 1rem 0">
+    <h1 style="font-size:1.75rem;font-weight:800;color:var(--color-text);letter-spacing:-0.03em;margin:0">Panel de Administración</h1>
+    <p style="color:var(--color-muted);margin:0.5rem 0 0">Gestiona los productos de tu tienda</p>
+  </div>
 
   <div class="admin-panels">
     <div class="panel">
@@ -30,7 +35,7 @@
         <label>Imagen
           <input type="file" name="img" id="img-file" accept="image/*" required>
         </label>
-        <div id="preview-img" style="margin-top:.5rem;"></div>
+        <div id="preview-img" style="margin-top:.5rem;border-radius:var(--radius-sm);overflow:hidden"></div>
         <label>Descripción
           <textarea name="desc" rows="2" required></textarea>
         </label>
@@ -47,7 +52,7 @@
       </form>
     </div>
     <div class="panel">
-      <h2>Modificar/Borrar producto</h2>
+      <h2>Modificar / Borrar producto</h2>
       <form id="edit-form">
         <label>Selecciona producto
           <select id="edit-select" name="id" required></select>
@@ -62,7 +67,7 @@
           <input type="text" name="img" id="edit-img-url" required>
           <input type="file" id="edit-img-file" accept="image/*">
         </label>
-        <div id="edit-preview-img" style="margin-top:.5rem;"></div>
+        <div id="edit-preview-img" style="margin-top:.5rem;border-radius:var(--radius-sm);overflow:hidden"></div>
         <label>Descripción
           <textarea name="desc" rows="2" required></textarea>
         </label>

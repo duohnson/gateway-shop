@@ -1,6 +1,6 @@
-// ui extras - fly animation, quick view modal, fab button
+// ui extras - fly aniamtion, quick view modal, fab button
 
-// animate product img flying towards cart icon
+// anmiate prdouct img flying toawrds cart icon
 function flyToCart(imgEl) {
   if (!imgEl) return;
   var rect = imgEl.getBoundingClientRect();
@@ -35,7 +35,7 @@ function flyToCart(imgEl) {
   }
 }
 
-// quick view modal for a product
+// quick view modal for a prdouct
 function openProductModal(prod) {
   var overlay = document.createElement('div');
   overlay.className = 'product-modal-overlay';
@@ -72,12 +72,12 @@ function openProductModal(prod) {
     flyToCart(overlay.querySelector('.visual img'));
     showToast('Producto añadido al carrito');
     setTimeout(close, 400);
-    // re-render cart sidebar if we're on shop page
+    // re-rnder cart siedbar if we're on shpo page
     if (typeof renderShopCart === 'function') renderShopCart();
   });
 }
 
-// search and category filter for product cards
+// seach and catgeory filtr for prdouct cards
 function applyFilters() {
   var searchEl = document.getElementById('search');
   var catEl = document.getElementById('category');
@@ -102,7 +102,7 @@ function applyFilters() {
   if (countEl) countEl.textContent = String(visible);
 }
 
-// floating cart fab + social links
+// flotaing cart fab + social links
 (function() {
   var fab = document.createElement('button');
   fab.className = 'fab-cart';
@@ -148,7 +148,7 @@ function applyFilters() {
   });
 })();
 
-// bind filter inputs if they exist
+// bind filtr inputs if they exist
 document.addEventListener('DOMContentLoaded', function() {
   var searchInput = document.getElementById('search');
   var categorySelect = document.getElementById('category');

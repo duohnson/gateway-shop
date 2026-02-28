@@ -1,4 +1,232 @@
-// shpo page - prdouct grid + cart siedbar + pagiantion
+#!/usr/bin/env python3
+"""bulk updat v3:
+  1. swap indigo/purpel to orange/red palete in custom.css (search-replce)
+  2. apend new stlyes (pagnation, contact-containr, avatar-wrap, product-grid)
+  3. rewirte shop.js with pagnation (4x4 = 16 per page)
+  4. updat tailwind.config.js colurs
+  5. updat tailwind.input.css colurs
+"""
+import os, re
+
+BASE    = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src', 'static', 'public')
+ROOT    = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+
+# ----------------------------------------------------------
+# 1. color replacemnts in custom.css
+# ----------------------------------------------------------
+css_path = os.path.join(BASE, 'css', 'custom.css')
+with open(css_path, 'r') as f:
+    css = f.read()
+
+# exact tokn replacemnts (order mattrs, longest/most-specfic first)
+color_map = [
+    # headr coment
+    ('Indigo/purple palette', 'Orange/red palette'),
+    ('indigo/purple palette', 'orange/red palette'),
+
+    # css custom proprty values in :root (exact hex)
+    ('--color-primary-dark: #4f46e5',  '--color-primary-dark: #dc2626'),
+    ('--color-primary-light: #818cf8', '--color-primary-light: #f87171'),
+    ('--color-primary-50: #eef2ff',    '--color-primary-50: #fef2f2'),
+    ('--color-primary-100: #e0e7ff',   '--color-primary-100: #fee2e2'),
+    ('--color-primary-200: #c7d2fe',   '--color-primary-200: #fecaca'),
+    ('--color-primary: #6366f1',       '--color-primary: #ef4444'),
+    ('--color-accent-dark: #7c3aed',   '--color-accent-dark: #ea580c'),
+    ('--color-accent-light: #a78bfa',  '--color-accent-light: #fb923c'),
+    ('--color-accent: #8b5cf6',        '--color-accent: #f97316'),
+
+    # hardcoded gradent hex values (in background/linear-gradent etc.)
+    ('#4f46e5', '#dc2626'),
+    ('#7c3aed', '#ea580c'),
+    ('#6366f1', '#ef4444'),
+    ('#818cf8', '#f87171'),
+    ('#8b5cf6', '#f97316'),
+    ('#a78bfa', '#fb923c'),
+
+    # rgba indgo refernces
+    ('rgba(99,102,241,', 'rgba(239,68,68,'),
+
+    # light purpel backgronds used as card img backdrp
+    ('#f5f3ff', '#fff7ed'),
+    ('#eef2ff', '#fef2f2'),
+]
+
+for old, new in color_map:
+    css = css.replace(old, new)
+
+# now apend new stlyes for pagnation, product-grid, contact-containr, avatar-wrap
+extra_css = r'''
+
+/* ══════════════════════════════════════════════════════════
+   PRODUCT GRID (replaces old .product-list)
+   ══════════════════════════════════════════════════════════ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+@media (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr; }
+}
+
+/* Smaller product cards for 4-col grid */
+.product-grid .product-card .img-wrap {
+  aspect-ratio: 3 / 2;
+}
+.product-grid .product-card .card-body {
+  padding: .75rem 1rem 1rem;
+}
+.product-grid .product-card .card-body h3 {
+  font-size: .875rem;
+  margin-bottom: .25rem;
+}
+.product-grid .product-card .card-body p {
+  font-size: .75rem;
+  margin-bottom: .5rem;
+}
+.product-grid .product-card .card-actions .price {
+  font-size: .9375rem;
+}
+.product-grid .product-card .card-actions button {
+  width: 32px; height: 32px;
+  min-width: 32px; min-height: 32px;
+}
+.product-grid .product-card .card-actions button svg {
+  width: 15px; height: 15px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAGINATION
+   ══════════════════════════════════════════════════════════ */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .375rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+  flex-wrap: wrap;
+}
+.pagination button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px; height: 36px;
+  padding: 0 .625rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: .8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.pagination button:hover:not(:disabled):not(.active) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-50);
+}
+.pagination button.active {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(239,68,68,.25);
+}
+.pagination button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.pagination .page-info {
+  font-size: .8125rem;
+  color: var(--color-muted);
+  margin: 0 .5rem;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CONTACT PAGE – container & avatar wrap
+   ══════════════════════════════════════════════════════════ */
+.contact-container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+.contact-form-section {
+  max-width: 600px;
+  margin: 3rem auto 0;
+}
+.contact-form-section h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 .25rem;
+  text-align: center;
+}
+.contact-form-section .form-subtitle {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: .9375rem;
+  margin: 0 0 1.5rem;
+}
+.contact-form .form-actions {
+  margin-top: 1.5rem;
+}
+.avatar-wrap {
+  width: 88px; height: 88px;
+  margin: 0 auto .75rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--color-primary-100);
+  background: var(--color-primary-50);
+}
+.avatar-wrap .avatar {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.team-card .team-role {
+  color: var(--color-muted);
+  font-size: .8125rem;
+  margin: .25rem 0 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SHOP LAYOUT
+   ══════════════════════════════════════════════════════════ */
+.shop-layout {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  align-items: start;
+}
+.shop-layout .shop-products { min-width: 0; }
+@media (max-width: 1024px) {
+  .shop-layout {
+    grid-template-columns: 1fr;
+  }
+}
+'''
+
+css += extra_css
+
+with open(css_path, 'w') as f:
+    f.write(css)
+print('  ✓ custom.css – colors swapped + new styles appended')
+
+
+# ----------------------------------------------------------
+# 2. shop.js - full rewirte with pagnation
+# ----------------------------------------------------------
+shop_js = r'''// shop page - product grid + cart sidebar + pagination
 
 var productos = [];
 var currentPage = 1;
@@ -134,12 +362,12 @@ function renderPagination(totalItems) {
 
   var html = '';
 
-  // preivous button
+  // Previous button
   html += '<button class="page-prev"' + (currentPage <= 1 ? ' disabled' : '') + ' aria-label="Anterior">' +
     '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>' +
   '</button>';
 
-  // page nubmers (show max 7 buttons with ellpisis)
+  // Page numbers (show max 7 buttons with ellipsis)
   var pages = getPaginationRange(currentPage, totalPages);
   for (var i = 0; i < pages.length; i++) {
     var pg = pages[i];
@@ -150,14 +378,14 @@ function renderPagination(totalItems) {
     }
   }
 
-  // next button
+  // Next button
   html += '<button class="page-next"' + (currentPage >= totalPages ? ' disabled' : '') + ' aria-label="Siguiente">' +
     '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>' +
   '</button>';
 
   container.innerHTML = html;
 
-  // bind events
+  // Bind events
   container.querySelectorAll('.page-num').forEach(function(btn) {
     btn.addEventListener('click', function() {
       currentPage = parseInt(btn.dataset.page);
@@ -245,7 +473,7 @@ function animateCards(container) {
   });
 }
 
-// cart siedbar renedring
+// cart sidebar rendering
 function renderShopCart() {
   var el = document.getElementById('cart-items');
   if (!el) return;
@@ -320,7 +548,7 @@ document.addEventListener('DOMContentLoaded', function() {
   loadCategories();
   renderShopCart();
 
-  // seach and filtr
+  // Search & filter
   var searchInput = document.getElementById('search');
   var categorySelect = document.getElementById('category');
   if (searchInput) {
@@ -345,3 +573,194 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+'''
+
+shop_path = os.path.join(BASE, 'js', 'shop.js')
+with open(shop_path, 'w') as f:
+    f.write(shop_js.lstrip('\n'))
+print('  ✓ shop.js – rewritten with pagination')
+
+
+# ----------------------------------------------------------
+# 3. tailwind.config.js
+# ----------------------------------------------------------
+tw_config = r'''/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './src/static/public/**/*.html',
+    './src/static/public/**/*.js',
+    './src/**/*.{html,js,go}'
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#ef4444',
+          50:  '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#ef4444',
+          600: '#dc2626',
+          700: '#b91c1c',
+          800: '#991b1b',
+          900: '#7f1d1d'
+        },
+        accent: {
+          DEFAULT: '#f97316',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c'
+        },
+        neutral: {
+          50:  '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a'
+        }
+      },
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial']
+      },
+      borderRadius: {
+        xl:  '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem'
+      },
+      boxShadow: {
+        'soft': '0 2px 15px -3px rgba(0,0,0,0.07), 0 10px 20px -2px rgba(0,0,0,0.04)',
+        'glow': '0 0 20px rgba(239,68,68,0.15)'
+      }
+    },
+  },
+  safelist: [
+    'from-red-500',
+    'to-orange-500',
+    'from-red-600',
+    'to-orange-600',
+    'text-red-600',
+    'bg-red-500',
+    'bg-red-600',
+    'hover:bg-red-600',
+    'text-orange-600',
+    'bg-white',
+    'text-gray-500',
+    'text-gray-600',
+    'bg-gray-100',
+    'bg-gray-50',
+    'text-gray-800',
+    'bg-transparent',
+    'border-white',
+    'text-white',
+    'hover:underline',
+    'gap-8'
+  ],
+  plugins: [],
+}
+'''
+
+tw_path = os.path.join(ROOT, 'tailwind.config.js')
+with open(tw_path, 'w') as f:
+    f.write(tw_config.lstrip('\n'))
+print('  ✓ tailwind.config.js – orange/red palette')
+
+
+# ----------------------------------------------------------
+# 4. tailwind.input.css
+# ----------------------------------------------------------
+tw_input = r'''@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Project base and component layers – orange/red design system */
+:root{
+	/* Core palette tokens */
+	--color-primary: #ef4444;
+	--color-primary-dark: #dc2626;
+	--color-primary-50: #fef2f2;
+	--color-primary-100: #fee2e2;
+	--color-primary-200: #fecaca;
+	--color-accent: #f97316;
+	--color-accent-dark: #ea580c;
+	--color-bg: #f8fafc;
+	--color-surface: #ffffff;
+	--color-text: #0f172a;
+	--color-muted: #64748b;
+	--color-border: #e2e8f0;
+	--radius-lg: 16px;
+	--container: 1200px;
+}
+
+@layer base {
+	html {
+		font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		line-height: 1.6;
+		color: var(--color-text);
+		background: var(--color-bg);
+		-webkit-font-feature-settings: "kern" 1;
+	}
+	body { margin: 0; }
+	a { color: inherit; text-decoration: none }
+	h1,h2,h3,h4 { color: var(--color-text); }
+}
+
+@layer components {
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.625rem 1.25rem;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		font-size: 0.875rem;
+		transition: all 0.2s cubic-bezier(.4,0,.2,1);
+		box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+		cursor: pointer;
+	}
+	.btn-primary {
+		background: linear-gradient(135deg, #ef4444, #f97316);
+		color: #fff;
+		border: none;
+	}
+	.btn-primary:hover {
+		background: linear-gradient(135deg, #dc2626, #ea580c);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(239,68,68,0.3);
+	}
+	.btn-ghost {
+		background: transparent;
+		border: 1.5px solid rgba(255,255,255,0.9);
+		color: #fff;
+	}
+	.btn-ghost:hover {
+		background: rgba(255,255,255,0.1);
+	}
+	.card {
+		background: #fff;
+		border-radius: 1rem;
+		padding: 1rem;
+		box-shadow: 0 2px 15px -3px rgba(0,0,0,0.07), 0 10px 20px -2px rgba(0,0,0,0.04);
+		border: 1px solid var(--color-border);
+	}
+}
+
+/* Place for additional @apply-based helpers */
+'''
+
+tw_input_path = os.path.join(BASE, 'css', 'tailwind.input.css')
+with open(tw_input_path, 'w') as f:
+    f.write(tw_input.lstrip('\n'))
+print('  ✓ tailwind.input.css – orange/red palette')
+
+
+print('\n✅ All updates applied! Run: node scripts/build-tailwind.js')
