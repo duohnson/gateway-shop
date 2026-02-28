@@ -5,6 +5,7 @@ import (
 	"App/src/database/connect"
 	"App/src/routes"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
@@ -40,6 +41,12 @@ func main() {
 	//================//
 	//
 	//===========================================================//
+	// ================ no lo toques, esto arregla un problema en el carrito dinamico ==============//
+	if os.Getenv("DEV_NO_TLS") == "1" || os.Getenv("DEV_NO_TLS") == "true" {
+		log.Println("Starting server WITHOUT TLS (DEV_NO_TLS)")
+		log.Fatal(app.Listen(configs.SERVER_PORT))
+	}
+
 	log.Fatal(app.Listen(configs.SERVER_PORT, fiber.ListenConfig{
 		CertFile:    "./certs/localhost+1.pem",
 		CertKeyFile: "./certs/localhost+1-key.pem",

@@ -1,406 +1,299 @@
-// GET categories from localStorage or JSON file
-function getCategorias() {
-    let cats = localStorage.getItem('categorias');
-    if (cats) return JSON.parse(cats);
+// admin panel - product upload and management
 
-    // IF not in localStorage, try to load from JSON file
-    try {
-        const req = new XMLHttpRequest();
-        req.open('GET', 'categorias.json', false); // Synchronous request
-        req.send(null);
-
-        if (req.status === 200) {
-            cats = JSON.parse(req.responseText);
-            localStorage.setItem('categorias', JSON.stringify(cats));
-            return cats;
-        }
-    } catch (err) {
-        console.warn('Could not load categories from file');
+// get categories async (no more sync xhr)
+async function getCategorias() {
+  var stored = localStorage.getItem('categorias');
+  if (stored) {
+    try { return JSON.parse(stored); } catch(e) {}
+  }
+  try {
+    var res = await fetch('categorias.json');
+    if (res.ok) {
+      var cats = await res.json();
+      localStorage.setItem('categorias', JSON.stringify(cats));
+      return cats;
     }
-
-    return [];
+  } catch(e) {}
+  return [];
 }
 
-// SAVE categories to localStorage and server
 function setCategorias(cats) {
-    localStorage.setItem('categorias', JSON.stringify(cats));
-
-    // UPDATE categories.json on server
-    fetch('categorias.json', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cats)
-    }).catch(err => {
-        console.warn('Failed to update categories on server:', err);
-    });
+  localStorage.setItem('categorias', JSON.stringify(cats));
 }
 
-// RENDER category dropdown options
-function renderCategorias() {
-    const cats = getCategorias();
-    const sel = document.getElementById('categoria-select');
+async function renderCategorias() {
+  var cats = await getCategorias();
+  var sel = document.getElementById('categoria-select');
+  if (!sel) return;
 
-    if (!sel) return;
+  sel.innerHTML = cats.map(function(c) {
+    return '<option value="' + escapeHtml(c) + '">' + escapeHtml(c.charAt(0).toUpperCase() + c.slice(1)) + '</option>';
+  }).join('');
 
-    // BUILD category options HTML
-    sel.innerHTML = cats
-        .map(c => `<option value="${c}">${c.charAt(0).toUpperCase() + c.slice(1)}</option>`)
-        .join('');
-
-    // ALSO update edit form category dropdown
-    const editSel = document.getElementById('edit-categoria-select');
-    if (editSel) {
-        editSel.innerHTML = sel.innerHTML;
-    }
+  // keep edit form in sync
+  var editSel = document.getElementById('edit-categoria-select');
+  if (editSel) editSel.innerHTML = sel.innerHTML;
 }
 
-// ADD new category handler
-function handleAddCategoria() {
-    const input = document.getElementById('nueva-categoria');
-    let val = input.value.trim();
+async function handleAddCategoria() {
+  var input = document.getElementById('nueva-categoria');
+  var val = input.value.trim();
+  if (!val) return;
 
-    if (!val) return;
-
-    let cats = getCategorias();
-
-    // ONLY add if category doesnt exist
-    if (!cats.includes(val)) {
-        cats.push(val);
-        setCategorias(cats);
-        renderCategorias();
-        input.value = '';
-    }
+  var cats = await getCategorias();
+  if (!cats.includes(val)) {
+    cats.push(val);
+    setCategorias(cats);
+    await renderCategorias();
+    input.value = '';
+  }
 }
 
-// GET products from localStorage
 function getProductos() {
-    const guardados = localStorage.getItem('productos');
-    return guardados ? JSON.parse(guardados) : [];
+  try {
+    return JSON.parse(localStorage.getItem('productos')) || [];
+  } catch(e) {
+    return [];
+  }
 }
 
-// SAVE products to localStorage and server
-function setProductos(productos) {
-    localStorage.setItem('productos', JSON.stringify(productos));
-
-    // UPDATE productos.json on server
-    fetch('productos.json', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productos)
-    }).catch(err => {
-        console.warn('Failed to update products on server:', err);
-    });
+function setProductos(prods) {
+  localStorage.setItem('productos', JSON.stringify(prods));
 }
 
-// ADD new product to the list
-function agregarProducto(producto) {
-    let productos = getProductos();
-
-    // GENERATE unique ID based on timestamp
-    producto.id = Date.now();
-    productos.push(producto);
-    setProductos(productos);
-
-    // ADD category if its new
-    let cats = getCategorias();
-    if (!cats.includes(producto.categoria)) {
-        cats.push(producto.categoria);
-        setCategorias(cats);
-        renderCategorias();
-    }
-}
-
-// HANDLE product upload form submission
 async function handleUploadSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
+  var form = e.target;
+  var nombre = form.nombre.value.trim();
+  var precio = parseFloat(form.precio.value);
+  var desc = form.desc.value.trim();
+  var categoria = form.categoria.value;
+  var imgFile = form.img.files[0];
 
-    const form = e.target;
-    const nombre = form.nombre.value.trim();
-    const precio = parseFloat(form.precio.value);
-    const desc = form.desc.value.trim();
-    const categoria = form.categoria.value.trim() || form.categoria.options[form.categoria.selectedIndex].value;
-    const imgFile = form.img.files[0];
+  if (!nombre || isNaN(precio) || !imgFile || !desc || !categoria) {
+    showMsg('error-msg', 'Todos los campos son obligatorios.');
+    return;
+  }
 
-    // VALIDATE all fields are filled
-    if (!nombre || isNaN(precio) || !imgFile || !desc || !categoria) {
-        showMessage('error-msg', 'Todos los campos son obligatorios.');
-        return;
+  // upload image first
+  var imgForm = new FormData();
+  imgForm.append('img', imgFile);
+  var imgUrl = '';
+
+  try {
+    var imgRes = await fetch('/api/upload-img', { method: 'POST', body: imgForm });
+    if (!imgRes.ok) {
+      showMsg('error-msg', 'Error al subir la imagen.');
+      return;
     }
+    imgUrl = await imgRes.text();
+  } catch(err) {
+    showMsg('error-msg', 'Error de conexión al subir imagen.');
+    return;
+  }
 
-    // UPLOAD IMAGE FIRST
-    const imgForm = new FormData();
-    imgForm.append('img', imgFile);
-    let imgUrl = '';
-    try {
-        const imgRes = await fetch('/api/upload-img', { method: 'POST', body: imgForm });
-        if (!imgRes.ok) {
-            showMessage('error-msg', 'Error al subir la imagen.');
-            return;
-        }
-        imgUrl = await imgRes.text();
-    } catch (err) {
-        showMessage('error-msg', 'Error de conexión al subir imagen.');
-        return;
-    }
+  // then create the product
+  var prodForm = new FormData();
+  prodForm.append('nombre', nombre);
+  prodForm.append('precio', String(precio));
+  prodForm.append('desc', desc);
+  prodForm.append('categoria', categoria);
+  prodForm.append('img', imgUrl);
 
-    // PREPARE product data for API (send plain form values)
-    const prodForm = new FormData();
-    prodForm.append('nombre', nombre);
-    prodForm.append('precio', String(precio));
-    prodForm.append('desc', desc);
-    prodForm.append('categoria', categoria);
-    prodForm.append('img', imgUrl);
+  try {
+    var res = await fetch('/api/productos', { method: 'POST', body: prodForm });
+    if (res.ok) {
+      form.reset();
+      document.getElementById('preview-img').innerHTML = '';
+      showMsg('success-msg', 'Producto subido correctamente.');
 
-    try {
-        const res = await fetch('/api/productos', { method: 'POST', body: prodForm });
-        if (res.ok) {
-            form.reset();
-            document.getElementById('preview-img').innerHTML = '';
-            showMessage('success-msg', 'Producto subido correctamente.');
-            cargarEditSelect();
+      // sync local cache so shop page picks it up even if api is slow
+      var newProd = { id: Date.now(), nombre: nombre, precio: precio, desc: desc, categoria: categoria, img: imgUrl };
+      var prods = getProductos();
+      prods.push(newProd);
+      setProductos(prods);
+      loadEditSelect();
 
-            // update localStorage and reload shop
-            let productos = localStorage.getItem('productos');
-            productos = productos ? JSON.parse(productos) : [];
-            productos.push({ id: Date.now(), nombre, precio, desc, categoria, img: imgUrl });
-            localStorage.setItem('productos', JSON.stringify(productos));
-            window.location.href = 'shop.html';
-        } else {
-            showMessage('error-msg', 'Error al subir el producto.');
-        }
-    } catch (err) {
-        showMessage('error-msg', 'Error de conexión con el servidor.');
-    }
-}
-
-// SHOW success or error message
-function showMessage(msgId, text) {
-    const successEl = document.getElementById('success-msg');
-    const errorEl = document.getElementById('error-msg');
-
-    if (msgId === 'success-msg') {
-        successEl.textContent = text || 'Producto subido correctamente.';
-        successEl.style.display = 'block';
-        errorEl.style.display = 'none';
+      // also update categories if new
+      var cats = [];
+      try { cats = JSON.parse(localStorage.getItem('categorias')) || []; } catch(e) {}
+      if (categoria && cats.indexOf(categoria) === -1) {
+        cats.push(categoria);
+        setCategorias(cats);
+      }
     } else {
-        errorEl.textContent = text || 'Ocurrió un error.';
-        errorEl.style.display = 'block';
-        successEl.style.display = 'none';
+      showMsg('error-msg', 'Error al subir el producto.');
     }
+  } catch(err) {
+    showMsg('error-msg', 'Error de conexión con el servidor.');
+  }
 }
 
-// HANDLE image file preview for upload form
+function showMsg(type, text) {
+  var success = document.getElementById('success-msg');
+  var error = document.getElementById('error-msg');
+  if (type === 'success-msg') {
+    success.textContent = text;
+    success.style.display = 'block';
+    error.style.display = 'none';
+  } else {
+    error.textContent = text;
+    error.style.display = 'block';
+    success.style.display = 'none';
+  }
+}
+
+function showEditMsg(type, text) {
+  var success = document.getElementById('edit-success-msg');
+  var error = document.getElementById('edit-error-msg');
+  if (type === 'edit-success-msg') {
+    success.textContent = text;
+    success.style.display = 'block';
+    error.style.display = 'none';
+  } else {
+    error.textContent = text;
+    error.style.display = 'block';
+    success.style.display = 'none';
+  }
+}
+
 function handleImagePreview(e) {
-    const file = e.target.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-
-        reader.onload = function (ev) {
-            document.getElementById('preview-img').innerHTML = `<img src="${ev.target.result}" style="max-width:100px;border-radius:8px;">`;
-        };
-
-        reader.readAsDataURL(file);
-    }
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    document.getElementById('preview-img').innerHTML =
+      '<img src="' + ev.target.result + '" style="max-width:100px;border-radius:8px;" alt="preview">';
+  };
+  reader.readAsDataURL(file);
 }
 
-// LOAD products into edit dropdown
-function cargarEditSelect() {
-    const productos = getProductos();
-    const select = document.getElementById('edit-select');
+function loadEditSelect() {
+  var prods = getProductos();
+  var sel = document.getElementById('edit-select');
+  if (!sel) return;
 
-    if (!select) return;
+  sel.innerHTML = prods.map(function(p) {
+    return '<option value="' + p.id + '">' + escapeHtml(p.nombre) + '</option>';
+  }).join('');
 
-    // BUILD product options
-    select.innerHTML = productos.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('');
-
-    // LOAD first product into edit form
-    if (productos.length) {
-        cargarEditForm(productos[0]);
-    }
+  if (prods.length) loadEditForm(prods[0]);
 }
 
-// LOAD product data into edit form
-function cargarEditForm(producto) {
-    const form = document.getElementById('edit-form');
+function loadEditForm(prod) {
+  var form = document.getElementById('edit-form');
+  if (!form) return;
+  form.nombre.value = prod.nombre;
+  form.precio.value = prod.precio;
+  form.img.value = prod.img;
+  form.desc.value = prod.desc;
 
-    if (!form) return;
+  var catSel = document.getElementById('edit-categoria-select');
+  if (catSel) catSel.value = prod.categoria;
 
-    form.nombre.value = producto.nombre;
-    form.precio.value = producto.precio;
-    form.img.value = producto.img;
-    form.desc.value = producto.desc;
-
-    const catSelect = document.getElementById('edit-categoria-select');
-    if (catSelect) {
-        catSelect.value = producto.categoria;
-    }
-
-    // SHOW image preview
-    const previewEl = document.getElementById('edit-preview-img');
-    if (previewEl) {
-        previewEl.innerHTML = producto.img ? `<img src="${producto.img}" style="max-width:100px;border-radius:8px;">` : '';
-    }
+  var preview = document.getElementById('edit-preview-img');
+  if (preview) {
+    preview.innerHTML = prod.img
+      ? '<img src="' + escapeHtml(prod.img) + '" style="max-width:100px;border-radius:8px;" alt="preview">'
+      : '';
+  }
 }
 
-// HANDLE edit select change
 function handleEditSelectChange(e) {
-    const productos = getProductos();
-    const selectedId = e.target.value;
-    const prod = productos.find(p => p.id == selectedId);
-
-    if (prod) {
-        cargarEditForm(prod);
-    }
+  var prods = getProductos();
+  var prod = prods.find(function(p) { return p.id == e.target.value; });
+  if (prod) loadEditForm(prod);
 }
 
-// HANDLE edit form image file change
 function handleEditImageChange(e) {
-    const file = e.target.files[0];
-
-    if (file) {
-        const fileName = file.name;
-        const destPath = 'img/products/' + fileName;
-        const reader = new FileReader();
-
-        reader.onload = function (ev) {
-            document.getElementById('edit-img-url').value = destPath;
-            document.getElementById('edit-preview-img').innerHTML = `<img src="${ev.target.result}" style="max-width:100px;border-radius:8px;">`;
-        };
-
-        reader.readAsDataURL(file);
-    }
+  var file = e.target.files[0];
+  if (!file) return;
+  var dest = 'img/products/' + file.name;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    document.getElementById('edit-img-url').value = dest;
+    document.getElementById('edit-preview-img').innerHTML =
+      '<img src="' + ev.target.result + '" style="max-width:100px;border-radius:8px;" alt="preview">';
+  };
+  reader.readAsDataURL(file);
 }
 
-// HANDLE edit form image URL input
 function handleEditImageUrlChange(e) {
-    const url = e.target.value;
-    document.getElementById('edit-preview-img').innerHTML = url ? `<img src="${url}" style="max-width:100px;border-radius:8px;">` : '';
+  var url = e.target.value;
+  var el = document.getElementById('edit-preview-img');
+  if (el) el.innerHTML = url
+    ? '<img src="' + escapeHtml(url) + '" style="max-width:100px;border-radius:8px;" alt="preview">'
+    : '';
 }
 
-// HANDLE edit form submission
 function handleEditSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
+  var form = e.target;
+  var id = form.id.value;
+  var prods = getProductos();
+  var idx = prods.findIndex(function(p) { return p.id == id; });
 
-    const form = e.target;
-    const id = form.id.value;
-    let productos = getProductos();
+  if (idx === -1) {
+    showEditMsg('edit-error-msg', 'Producto no encontrado.');
+    return;
+  }
 
-    // FIND product index
-    const idx = productos.findIndex(p => p.id == id);
+  prods[idx] = {
+    id: id,
+    nombre: form.nombre.value.trim(),
+    precio: parseFloat(form.precio.value),
+    img: form.img.value.trim(),
+    desc: form.desc.value.trim(),
+    categoria: form.categoria.value.trim()
+  };
 
-    if (idx === -1) {
-        showEditMessage('edit-error-msg', 'Producto no encontrado.');
-        return;
-    }
-
-    // UPDATE product data
-    productos[idx] = {
-        id: id,
-        nombre: form.nombre.value.trim(),
-        precio: parseFloat(form.precio.value),
-        img: form.img.value.trim(),
-        desc: form.desc.value.trim(),
-        categoria: form.categoria.value.trim()
-    };
-
-    setProductos(productos);
-    showEditMessage('edit-success-msg', 'Producto modificado correctamente.');
-    cargarEditSelect();
+  setProductos(prods);
+  showEditMsg('edit-success-msg', 'Producto modificado.');
+  loadEditSelect();
 }
 
-// SHOW edit form success or error message
-function showEditMessage(msgId, text) {
-    const successEl = document.getElementById('edit-success-msg');
-    const errorEl = document.getElementById('edit-error-msg');
+function handleDelete() {
+  var form = document.getElementById('edit-form');
+  var id = form.id.value;
+  var prods = getProductos().filter(function(p) { return p.id != id; });
+  setProductos(prods);
+  showEditMsg('edit-success-msg', 'Producto borrado.');
+  loadEditSelect();
 
-    if (msgId === 'edit-success-msg') {
-        successEl.textContent = text || 'Producto modificado correctamente.';
-        successEl.style.display = 'block';
-        errorEl.style.display = 'none';
-    } else {
-        errorEl.textContent = text || 'Ocurrió un error.';
-        errorEl.style.display = 'block';
-        successEl.style.display = 'none';
-    }
+  if (prods.length) {
+    loadEditForm(prods[0]);
+  } else {
+    form.reset();
+    document.getElementById('edit-preview-img').innerHTML = '';
+  }
 }
 
-// HANDLE product deletion
-function handleDeleteProduct() {
-    const form = document.getElementById('edit-form');
-    const id = form.id.value;
-    let productos = getProductos();
+document.addEventListener('DOMContentLoaded', function() {
+  renderCategorias();
 
-    // FILTER out the product to delete
-    productos = productos.filter(p => p.id != id);
-    setProductos(productos);
+  var addCatBtn = document.getElementById('agregar-categoria');
+  if (addCatBtn) addCatBtn.addEventListener('click', handleAddCategoria);
 
-    showEditMessage('edit-success-msg', 'Producto borrado correctamente.');
-    cargarEditSelect();
+  var uploadForm = document.getElementById('upload-form');
+  if (uploadForm) uploadForm.addEventListener('submit', handleUploadSubmit);
 
-    // IF products remain, load first one
-    if (productos.length) {
-        cargarEditForm(productos[0]);
-    } else {
-        // RESET form if no products left
-        form.reset();
-        document.getElementById('edit-preview-img').innerHTML = '';
-    }
-}
+  var imgFile = document.getElementById('img-file');
+  if (imgFile) imgFile.addEventListener('change', handleImagePreview);
 
-// INIT all event listeners when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // RENDER categories on load
-    renderCategorias();
+  var editSelect = document.getElementById('edit-select');
+  if (editSelect) editSelect.addEventListener('change', handleEditSelectChange);
 
-    // ADD category button
-    const addCatBtn = document.getElementById('agregar-categoria');
-    if (addCatBtn) {
-        addCatBtn.addEventListener('click', handleAddCategoria);
-    }
+  var editImgFile = document.getElementById('edit-img-file');
+  if (editImgFile) editImgFile.addEventListener('change', handleEditImageChange);
 
-    // UPLOAD form
-    const uploadForm = document.getElementById('upload-form');
-    if (uploadForm) {
-        uploadForm.addEventListener('submit', handleUploadSubmit);
-    }
+  var editImgUrl = document.getElementById('edit-img-url');
+  if (editImgUrl) editImgUrl.addEventListener('input', handleEditImageUrlChange);
 
-    // IMAGE preview for upload
-    const imgFile = document.getElementById('img-file');
-    if (imgFile) {
-        imgFile.addEventListener('change', handleImagePreview);
-    }
+  var editForm = document.getElementById('edit-form');
+  if (editForm) editForm.addEventListener('submit', handleEditSubmit);
 
-    // EDIT select dropdown
-    const editSelect = document.getElementById('edit-select');
-    if (editSelect) {
-        editSelect.addEventListener('change', handleEditSelectChange);
-    }
+  var deleteBtn = document.getElementById('delete-btn');
+  if (deleteBtn) deleteBtn.addEventListener('click', handleDelete);
 
-    // EDIT form image file
-    const editImgFile = document.getElementById('edit-img-file');
-    if (editImgFile) {
-        editImgFile.addEventListener('change', handleEditImageChange);
-    }
-
-    // EDIT form image URL
-    const editImgUrl = document.getElementById('edit-img-url');
-    if (editImgUrl) {
-        editImgUrl.addEventListener('input', handleEditImageUrlChange);
-    }
-
-    // EDIT form submission
-    const editForm = document.getElementById('edit-form');
-    if (editForm) {
-        editForm.addEventListener('submit', handleEditSubmit);
-    }
-
-    // DELETE button
-    const deleteBtn = document.getElementById('delete-btn');
-    if (deleteBtn) {
-        deleteBtn.addEventListener('click', handleDeleteProduct);
-    }
-
-    // LOAD products into edit select on init
-    cargarEditSelect();
+  loadEditSelect();
 });
